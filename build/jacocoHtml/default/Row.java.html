@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Row.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">HW9</a> &gt; <a href="index.source.html" class="el_package">default</a> &gt; <span class="el_source">Row.java</span></div><h1>Row.java</h1><pre class="source lang-java linenums">import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.Objects;
+
+/**
+ * Class Row is a list of seats as it extends ArrayList of Seat objects. It contains information
+ * about a row number (1 is closest to the screen, etc.) and whether it is wheelchair accessible.
+ */
+public class Row extends ArrayList&lt;Seat&gt; {
+  private int rowNumber;
+  private boolean wheelchairAccessible;
+
+  /**
+   * Constructor for class Row.
+   * @param rowNumber row number, as a positive integer
+   * @param wheelchairAccessible is wheelchair accessible, as a boolean
+   */
+<span class="fc" id="L18">  public Row(int rowNumber, boolean wheelchairAccessible) {</span>
+<span class="pc bpc" id="L19" title="1 of 2 branches missed.">    if (rowNumber &lt; 1) {</span>
+<span class="nc" id="L20">      throw new IllegalArgumentException(&quot;Row number must be a positive integer.&quot;);</span>
+    }
+<span class="fc" id="L22">    this.rowNumber = rowNumber;</span>
+<span class="fc" id="L23">    this.wheelchairAccessible = wheelchairAccessible;</span>
+<span class="fc" id="L24">  }</span>
+
+  /**
+   * Getter for row number.
+   * @return row number, as a positive integer
+   */
+  public int getRowNumber() {
+<span class="fc" id="L31">    return rowNumber;</span>
+  }
+
+  /**
+   * Getter for wheelchairAccessible.
+   * @return is wheelchair accessible, as a boolean
+   */
+  public boolean isWheelchairAccessible() {
+<span class="fc" id="L39">    return wheelchairAccessible;</span>
+  }
+
+  /**
+   * Override add method so that seats are sorted based on name from A to Z.
+   * @param seat element whose presence in this collection is to be ensured
+   * @return true
+   */
+  @Override
+  public boolean add(Seat seat) {
+    // Check for the existence of a seat with the same name
+<span class="fc bfc" id="L50" title="All 2 branches covered.">    for (Seat existingSeat : this) {</span>
+<span class="pc bpc" id="L51" title="1 of 2 branches missed.">      if (existingSeat.getName().equals(seat.getName())) {</span>
+        // Seat with the same name already exists, do not add
+<span class="nc" id="L53">        return false;</span>
+      }
+<span class="fc" id="L55">    }</span>
+
+<span class="fc" id="L57">    super.add(seat);</span>
+<span class="fc" id="L58">    this.sortSeats();</span>
+<span class="fc" id="L59">    return true;</span>
+  }
+
+  /**
+   * Private helper method to sort the seats based on name from A to Z.
+   */
+  private void sortSeats() {
+<span class="fc" id="L66">    this.sort(Comparator.comparing(Seat::getName));</span>
+<span class="fc" id="L67">  }</span>
+
+  @Override
+  public boolean equals(Object o) {
+<span class="nc bnc" id="L71" title="All 2 branches missed.">    if (this == o) {</span>
+<span class="nc" id="L72">      return true;</span>
+    }
+<span class="nc bnc" id="L74" title="All 4 branches missed.">    if (o == null || getClass() != o.getClass()) {</span>
+<span class="nc" id="L75">      return false;</span>
+    }
+<span class="nc bnc" id="L77" title="All 2 branches missed.">    if (!super.equals(o)) {</span>
+<span class="nc" id="L78">      return false;</span>
+    }
+<span class="nc" id="L80">    Row seats = (Row) o;</span>
+<span class="nc bnc" id="L81" title="All 4 branches missed.">    return rowNumber == seats.rowNumber &amp;&amp; wheelchairAccessible == seats.wheelchairAccessible;</span>
+  }
+
+  @Override
+  public int hashCode() {
+<span class="nc" id="L86">    return Objects.hash(super.hashCode(), rowNumber, wheelchairAccessible);</span>
+  }
+
+  // Only used for testing
+  public int superHashCode() {
+<span class="nc" id="L91">    return super.hashCode();</span>
+  }
+
+  @Override
+  public String toString() {
+<span class="fc" id="L96">    StringBuilder sb = new StringBuilder();</span>
+<span class="fc" id="L97">    sb.append(String.format(&quot;%-3d&quot;, rowNumber));</span>
+
+<span class="fc bfc" id="L99" title="All 2 branches covered.">    for (int i = 0; i &lt; this.size(); i++) {</span>
+<span class="fc bfc" id="L100" title="All 2 branches covered.">      if (this.get(i).getReservedFor() != null) {</span>
+<span class="fc" id="L101">        sb.append(&quot;X&quot;);</span>
+<span class="fc bfc" id="L102" title="All 2 branches covered.">      } else if (wheelchairAccessible) {</span>
+<span class="fc" id="L103">        sb.append(&quot;=&quot;);</span>
+      } else {
+<span class="fc" id="L105">        sb.append(&quot;_&quot;);</span>
+      }
+<span class="fc bfc" id="L107" title="All 2 branches covered.">      if (i != this.size() - 1) {</span>
+<span class="fc" id="L108">        sb.append(&quot; &quot;);</span>
+      }
+    }
+
+<span class="fc" id="L112">    return sb.toString();</span>
+  }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

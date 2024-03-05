@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Theater.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">HW9</a> &gt; <a href="index.source.html" class="el_package">default</a> &gt; <span class="el_source">Theater.java</span></div><h1>Theater.java</h1><pre class="source lang-java linenums">import java.util.Comparator;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Objects;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+/**
+ * Class Theater contains information of a name, a list of rows, and a non-empty list of integers
+ * indicating which of the rows are wheelchair accessible.
+ */
+public class Theater {
+  private String name;
+  private List&lt;Row&gt; rows;
+  private List&lt;Integer&gt; accessibleRowNums;
+
+  /**
+   * Constructor of class Theater
+   * @param name name, as a String
+   * @param rows rows, as a List of Row objects
+   * @param accessibleRowNums a non-empty list of integers indicating which of the rows are
+   *                          wheelchair accessible
+   */
+<span class="fc" id="L24">  public Theater(String name, List&lt;Row&gt; rows, List&lt;Integer&gt; accessibleRowNums) {</span>
+<span class="fc" id="L25">    validateAccessibleRowsNotEmpty(accessibleRowNums);</span>
+<span class="fc" id="L26">    validateAccessibleRowNumbers(rows, accessibleRowNums);</span>
+<span class="fc" id="L27">    sortRows(rows);</span>
+<span class="pc" id="L28">    accessibleRowNums.sort((a, b) -&gt; a - b);</span>
+
+<span class="fc" id="L30">    this.name = name;</span>
+<span class="fc" id="L31">    this.rows = rows;</span>
+<span class="fc" id="L32">    this.accessibleRowNums = accessibleRowNums;</span>
+<span class="fc" id="L33">  }</span>
+
+  /**
+   * Private helper method to check if the list of integers is empty.
+   * @param accessibleRowNums the list of integers
+   */
+  private void validateAccessibleRowsNotEmpty(List&lt;Integer&gt; accessibleRowNums) {
+<span class="pc bpc" id="L40" title="1 of 2 branches missed.">    if (accessibleRowNums.isEmpty()) {</span>
+<span class="nc" id="L41">      throw new IllegalArgumentException(&quot;List of accessible row numbers can't be empty.&quot;);</span>
+    }
+<span class="fc" id="L43">  }</span>
+
+  /**
+   * Private helper method to check if the list of integers matches the accessible row numbers.
+   * @param rows rows, as a List of Row objects
+   * @param accessibleRowNums a non-empty list of integers indicating which of the rows are
+   *                          wheelchair accessible
+   */
+  private void validateAccessibleRowNumbers(List&lt;Row&gt; rows, List&lt;Integer&gt; accessibleRowNums) {
+    // Set of row numbers from rows that are marked as accessible
+<span class="fc" id="L53">    Set&lt;Integer&gt; actualAccessibleRowNumbers = rows.stream()</span>
+<span class="fc" id="L54">        .filter(Row::isWheelchairAccessible)</span>
+<span class="fc" id="L55">        .map(Row::getRowNumber)</span>
+<span class="fc" id="L56">        .collect(Collectors.toSet());</span>
+
+    // Convert accessibleRowNums to a Set for equality check
+<span class="fc" id="L59">    Set&lt;Integer&gt; accessibleRowNumsSet = new HashSet&lt;&gt;(accessibleRowNums);</span>
+
+    // Check if the sets are equal
+<span class="pc bpc" id="L62" title="1 of 2 branches missed.">    if (!actualAccessibleRowNumbers.equals(accessibleRowNumsSet)) {</span>
+<span class="nc" id="L63">      throw new IllegalArgumentException(&quot;The sets of accessible row numbers do not match.&quot;);</span>
+    }
+<span class="fc" id="L65">  }</span>
+
+  /**
+   * Private helper method to sort rows based on the row number in ascending order.
+   * @param rows the List of Row objects
+   */
+  private void sortRows(List&lt;Row&gt; rows) {
+<span class="fc" id="L72">    rows.sort(Comparator.comparingInt(Row::getRowNumber));</span>
+<span class="fc" id="L73">  }</span>
+
+  /**
+   * Getter for name.
+   * @return name, as a String
+   */
+  public String getName() {
+<span class="fc" id="L80">    return name;</span>
+  }
+
+  /** Getter for rows.
+   * @return the List of Row objects
+   */
+  public List&lt;Row&gt; getRows() {
+<span class="fc" id="L87">    return rows;</span>
+  }
+
+  /**
+   * Getter for non-empty list of integers indicating which of the rows are wheelchair accessible.
+   * @return the List of integers
+   */
+  public List&lt;Integer&gt; getAccessibleRowNums() {
+<span class="nc" id="L95">    return accessibleRowNums;</span>
+  }
+
+  @Override
+  public boolean equals(Object o) {
+<span class="nc bnc" id="L100" title="All 2 branches missed.">    if (this == o) {</span>
+<span class="nc" id="L101">      return true;</span>
+    }
+<span class="nc bnc" id="L103" title="All 4 branches missed.">    if (o == null || getClass() != o.getClass()) {</span>
+<span class="nc" id="L104">      return false;</span>
+    }
+<span class="nc" id="L106">    Theater theater = (Theater) o;</span>
+<span class="nc bnc" id="L107" title="All 4 branches missed.">    return Objects.equals(name, theater.name) &amp;&amp; Objects.equals(rows,</span>
+<span class="nc bnc" id="L108" title="All 2 branches missed.">        theater.rows) &amp;&amp; Objects.equals(accessibleRowNums, theater.accessibleRowNums);</span>
+  }
+
+  @Override
+  public int hashCode() {
+<span class="nc" id="L113">    return Objects.hash(name, rows, accessibleRowNums);</span>
+  }
+
+  @Override
+  public String toString() {
+<span class="fc" id="L118">    StringBuilder sb = new StringBuilder();</span>
+<span class="fc bfc" id="L119" title="All 2 branches covered.">    for (Row row : rows) {</span>
+<span class="fc" id="L120">      sb.append(row.toString()).append(&quot;\n&quot;);</span>
+<span class="fc" id="L121">    }</span>
+<span class="fc" id="L122">    return sb.toString();</span>
+  }
+}
+
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

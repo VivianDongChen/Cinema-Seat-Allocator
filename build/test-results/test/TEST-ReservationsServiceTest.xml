@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="ReservationsServiceTest" tests="6" skipped="0" failures="0" errors="0" timestamp="2023-12-16T05:56:43" hostname="chendongs-MacBook-Pro.local" time="0.03">
+  <properties/>
+  <testcase name="testReserveSeatsSuccessfullyWithWheelchairAccessNotNeeded()" classname="ReservationsServiceTest" time="0.015"/>
+  <testcase name="testReserveSeatsSuccessfullyWithWheelchairAccessNeeded()" classname="ReservationsServiceTest" time="0.001"/>
+  <testcase name="testReserveSeatsInAccessibleRowWhenNonAccessibleFull()" classname="ReservationsServiceTest" time="0.004"/>
+  <testcase name="testReserveSeatsNotEnoughSeats()" classname="ReservationsServiceTest" time="0.004"/>
+  <testcase name="testReserveSeatsUnsuccessfulWhenAllRowsFull()" classname="ReservationsServiceTest" time="0.001"/>
+  <testcase name="testShowSeating()" classname="ReservationsServiceTest" time="0.001"/>
+  <system-out><![CDATA[I’ve reserved 2 seats for you at the Mock Theater in row 3, Bob.
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
